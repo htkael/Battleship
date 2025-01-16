@@ -7,6 +7,7 @@ class Ship {
 
   hit() {
     this.hits += 1;
+    this.isSunk();
   }
 
   isSunk() {
@@ -82,9 +83,25 @@ class Gameboard {
       this.misses.push([x, y]);
     }
   }
+
+  allShipsSunk() {
+    return this.ships.every((ship) => ship.isSunk());
+  }
+}
+
+class Player {
+  constructor(type) {
+    this.gameboard = new Gameboard();
+    this.type = type;
+  }
+
+  makeMove(opponentBoard, x, y) {
+    opponentBoard.receiveAttack(x, y);
+  }
 }
 
 module.exports = {
   Ship,
   Gameboard,
+  Player,
 };
