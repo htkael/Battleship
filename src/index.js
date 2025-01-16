@@ -1,4 +1,7 @@
-class Ship {
+import "./styles.css";
+import { UI } from "./ui";
+
+export class Ship {
   constructor(length) {
     this.length = length;
     this.hits = 0;
@@ -12,11 +15,12 @@ class Ship {
 
   isSunk() {
     this.sunk = this.hits >= this.length;
+    if (this.sunk) console.log("SUNK SHIP");
     return this.sunk;
   }
 }
 
-class Gameboard {
+export class Gameboard {
   constructor() {
     this.size = 10;
     this.grid = [];
@@ -78,9 +82,11 @@ class Gameboard {
     this.grid[x][y].hit = true;
     if (this.grid[x][y].ship) {
       this.grid[x][y].ship.hit();
+      console.log("Hit!");
       return true;
     } else {
       this.misses.push([x, y]);
+      console.log("Miss");
     }
   }
 
@@ -89,7 +95,7 @@ class Gameboard {
   }
 }
 
-class Player {
+export class Player {
   constructor(type) {
     this.gameboard = new Gameboard();
     this.type = type;
@@ -100,8 +106,7 @@ class Player {
   }
 }
 
-module.exports = {
-  Ship,
-  Gameboard,
-  Player,
-};
+const play = new UI();
+play.human.gameboard.placeShip(3, 0, 0, "x");
+play.computer.gameboard.placeShip(3, 0, 0, "x");
+play.updateGame();
