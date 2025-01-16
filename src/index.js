@@ -35,42 +35,69 @@ export class Gameboard {
   }
 
   horizontalShip(length, x, y, ship) {
-    if (y + length > 9 || x > 9) return null;
-    for (let i = 0; i < length; i++) {
-      if (this.grid[x][y + i].ship) {
-        return "Ship already there";
+    if (x < 0 || y < 0 || y + length > 9 || x > 9) return false;
+
+    // Check surrounding cells
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= length; j++) {
+        const checkX = x + i;
+        const checkY = y + j;
+        if (checkX >= 0 && checkX < 10 && checkY >= 0 && checkY < 10) {
+          if (this.grid[checkX][checkY].ship) return false;
+        }
       }
     }
+
+    // Place ship
     for (let i = 0; i < length; i++) {
       this.grid[x][y + i].ship = ship;
       this.grid[x][y + i].mark = "X";
     }
+    return true;
   }
 
   verticalShip(length, x, y, ship) {
-    if (x + length > 9 || y > 9) return null;
-    for (let i = 0; i < length; i++) {
-      if (this.grid[x + i][y].ship) {
-        return "Ship already there";
+    if (x < 0 || y < 0 || x + length > 9 || y > 9) return false;
+
+    // Check surrounding cells
+    for (let i = -1; i <= length; i++) {
+      for (let j = -1; j <= 1; j++) {
+        const checkX = x + i;
+        const checkY = y + j;
+        if (checkX >= 0 && checkX < 10 && checkY >= 0 && checkY < 10) {
+          if (this.grid[checkX][checkY].ship) return false;
+        }
       }
     }
+
+    // Place ship
     for (let i = 0; i < length; i++) {
       this.grid[x + i][y].ship = ship;
       this.grid[x + i][y].mark = "X";
     }
+    return true;
   }
 
   placeShip(length, x, y, direction) {
-    if (length < 1) return;
+    if (length < 1) return false;
     let ship = new Ship(length);
 
     if (direction === "x") {
-      this.horizontalShip(length, x, y, ship);
+      // Need to check the return value
+      const placed = this.horizontalShip(length, x, y, ship);
+      if (placed) {
+        this.ships.push(ship);
+        return true;
+      }
+      return false;
     } else {
-      this.verticalShip(length, x, y, ship);
+      const placed = this.verticalShip(length, x, y, ship);
+      if (placed) {
+        this.ships.push(ship);
+        return true;
+      }
+      return false;
     }
-
-    this.ships.push(ship);
   }
 
   checkIfHit(x, y) {
@@ -82,11 +109,9 @@ export class Gameboard {
     this.grid[x][y].hit = true;
     if (this.grid[x][y].ship) {
       this.grid[x][y].ship.hit();
-      console.log("Hit!");
       return true;
     } else {
       this.misses.push([x, y]);
-      console.log("Miss");
     }
   }
 
@@ -107,6 +132,5 @@ export class Player {
 }
 
 const play = new UI();
-play.human.gameboard.placeShip(3, 0, 0, "x");
-play.computer.gameboard.placeShip(3, 0, 0, "x");
-play.updateGame();
+
+play.initializeGame();

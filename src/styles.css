@@ -15,20 +15,21 @@ body {
     rgba(138, 235, 255, 0.9920343137254902) 100%
   );
   height: 100vh;
+  width: 100vw;
   margin: 0;
   padding: 0;
   color: white;
+  display: flex;
+  overflow: hidden;
 }
 
 .body {
   display: grid;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
+
   justify-content: center;
   margin: 0 auto;
   height: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
   gap: 2rem;
   padding: 1rem;
   width: 100%;
@@ -62,7 +63,7 @@ button.play:hover {
 }
 
 section.main {
-  display: grid;
+  display: none;
   grid-template-columns: 1fr 1fr;
   gap: 10rem;
 }
@@ -103,14 +104,51 @@ div.footer {
   font-size: 1.5rem;
 }
 
-.cell.H {
-  background-color: rgba(241, 36, 36, 0.5);
-}
-
 .cell.S {
   background-color: #474747;
 }
 
 .cell.M {
   background-color: rgba(102, 102, 102, 0.548);
+}
+
+.cell.H {
+  background-color: rgba(241, 36, 36, 0.5);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  color: black;
+}
+
+.modal-content {
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+#playAgainBtn {
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#playAgainBtn:hover {
+  background-color: #45a049;
 }
